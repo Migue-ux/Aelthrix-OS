@@ -1,0 +1,63 @@
+.window{
+  position:absolute;
+  top:100px;
+  left:120px;
+  width:520px;
+  min-height:200px;
+  color:var(--text-light);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border-radius:12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 30px 60px rgba(11,8,20,0.6), 0 6px 18px rgba(107,91,255,0.06);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px) saturate(120%);
+  overflow:hidden;
+  z-index: 50;
+}
+
+/* macOS-like header with 3 dots */
+.window-header{
+  height:48px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 12px;
+  cursor:grab;
+  align-items:center;
+  z-index: 51;
+}
+
+/* mac buttons */
+.window-buttons{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.btn{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  border:none;
+  padding:0;
+  margin:0;
+  display:inline-block;
+  cursor:pointer;
+}
+.btn.close{ background: linear-gradient(180deg,#ff5f56,#d64545); box-shadow: 0 1px 0 rgba(0,0,0,0.1); }
+.btn.minimize{ background: linear-gradient(180deg,#ffbd2e,#e6a500); }
+.btn.maximize{ background: linear-gradient(180deg,#27c93f,#1b9a2d); }
+
+.window-title{
+  flex:1;
+  text-align:center;
+  font-weight:600;
+  opacity:0.95;
+  color:var(--text-light);
+  font-size:14px;
+}
+.window-content{
+  padding:12px;
+  max-height:60vh;
+  overflow:auto;
+  color:var(--text-light);
+}

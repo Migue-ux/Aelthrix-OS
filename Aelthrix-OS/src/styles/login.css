@@ -1,0 +1,68 @@
+.login-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #0a0a0f, #000);
+  color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+.login-box {
+  text-align: center;
+  padding: 2rem 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+    -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
+  animation: fadeIn 1s ease;
+}
+
+.logo {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 2px;
+}
+.logo span {
+  color: cyan;
+}
+
+input {
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1rem;
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background: cyan;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #00e0e0;
+}
+
+.tip {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
