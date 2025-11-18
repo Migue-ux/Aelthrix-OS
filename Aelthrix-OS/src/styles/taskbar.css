@@ -31,3 +31,4 @@
 .dock-icon.active{ box-shadow: 0 10px 28px rgba(107,91,255,0.12); transform: translateY(-8px); }
 
 .taskbar-right{ color:var(--text-light); font-family: monospace; opacity:0.9; }
+

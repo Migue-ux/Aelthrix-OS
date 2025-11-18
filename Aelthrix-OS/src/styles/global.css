@@ -1,33 +1,37 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono&display=swap');
 
 :root{
-  --bg-dark: #07060c;
-  --neon-purple: #6b5bff;
-  --neon-cyan: #00e0ff;
+  --bg:#0b1020;
+  --panel: rgba(255,255,255,0.06);
+  --accent1: #6b5bff;
+  --accent2: #00e0ff;
   --glass: rgba(255,255,255,0.06);
-  --text-light: #0e0e0e;
+  --text:#e8eef8;
 }
 
-/* theme hook */
-[data-theme="neon"] {
-  --bg-dark: #050310;
-  --neon-purple: #6b5bff;
-  --neon-cyan: #00e0ff;
-  --text-light: #f0f0ff;
-}
-[data-theme="macos"] {
-  --bg-dark: #f6f7f9;
-  --neon-purple: #0a84ff;
-  --neon-cyan: #00b7ff;
-  --text-light: #111;
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box}
 html,body,#root{height:100%}
 body{
-  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto;
-  background: var(--bg-dark);
-  color: var(--text-light);
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
+}
+
+/* theme hooks */
+[data-theme="matrix"]{
+  --bg:#071013;
+  --panel: rgba(0,255,80,0.06);
+  --accent1:#00FF41;
+  --accent2:#00FF9A;
+  --text:#bfffbf;
+}
+[data-theme="light"]{
+  --bg:#f7f8fb;
+  --panel: rgba(0,0,0,0.04);
+  --accent1:#2b4cff;
+  --accent2:#00a8ff;
+  --text:#0b1220;
 }

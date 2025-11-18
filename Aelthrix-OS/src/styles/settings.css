@@ -1,0 +1,74 @@
+.settings-app {
+  padding: 18px;
+  color: white;
+  font-family: "JetBrains Mono", monospace;
+  animation: fadeIn 0.4s ease;
+}
+
+.settings-app h2 {
+  margin-top: 0;
+  color: #00e0ff;
+}
+
+section {
+  margin-bottom: 18px;
+}
+
+.options button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  transition: 0.2s;
+}
+
+.options button.active {
+  background: linear-gradient(90deg, #6b5bff, #00e0ff);
+  color: black;
+  font-weight: 600;
+}
+
+select, input[type="text"] {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  width: 100%;
+  margin-top: 6px;
+  outline: none;
+}
+
+.system-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.system-actions button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button.restart {
+  background: linear-gradient(90deg, #00e0ff, #6b5bff);
+  color: black;
+}
+
+button.shutdown {
+  background: linear-gradient(90deg, #ff5555, #ff0000);
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
