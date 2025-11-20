@@ -1,0 +1,225 @@
+/* --------------------------------------- */
+/*  GLOBAL THEME (LIGHT / DARK AUTO)       */
+/* --------------------------------------- */
+
+:root {
+  --text: #111;
+  --subtext: #555;
+  --bg: #f2f2f7;
+  --panel: rgba(255, 255, 255, 0.12);
+  --panel-hover: rgba(255, 255, 255, 0.18);
+  --panel-strong: rgba(255, 255, 255, 0.25);
+  --accent: #4a8cff;
+  --radius: 10px;
+  --transition: 0.15s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #f2f2f2;
+    --subtext: #bdbdbd;
+    --bg: #0d0d0f;
+    --panel: rgba(255, 255, 255, 0.05);
+    --panel-hover: rgba(255, 255, 255, 0.15);
+    --panel-strong: rgba(255, 255, 255, 0.22);
+    --accent: #4a8cff;
+  }
+}
+
+/* --------------------------------------- */
+/*  CONTAINER                              */
+/* --------------------------------------- */
+
+.fm-wrap {
+  width: 100%;
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--text);
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --------------------------------------- */
+/*  HEADER                                 */
+/* --------------------------------------- */
+
+.fm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.fm-header button {
+  background: var(--panel);
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text);
+}
+
+.fm-header button:hover {
+  background: var(--panel-hover);
+  transform: translateY(-2px);
+}
+
+.fm-upload input {
+  display: none;
+}
+
+.fm-upload label {
+  padding: 8px 14px;
+  background: var(--panel);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.fm-upload label:hover {
+  background: var(--panel-hover);
+}
+
+/* BREADCRUMBS */
+.fm-breadcrumbs {
+  font-size: 13px;
+  opacity: 0.75;
+  color: var(--subtext);
+}
+
+/* --------------------------------------- */
+/*  LAYOUT                                 */
+/* --------------------------------------- */
+
+.fm-content {
+  display: flex;
+  gap: 16px;
+}
+
+.fm-side {
+  width: 220px;
+  background: var(--panel);
+  padding: 12px;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Sidebar item */
+.fm-side-item {
+  padding: 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text);
+}
+
+.fm-side-item:hover {
+  background: var(--panel-hover);
+}
+
+.fm-side-item.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* LIST / MAIN AREA */
+.fm-list {
+  flex: 1;
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 14px;
+  min-height: 380px;
+  overflow-y: auto;
+}
+
+/* --------------------------------------- */
+/*  FILE ITEMS                             */
+/* --------------------------------------- */
+
+.fm-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: var(--radius);
+  background: transparent;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.fm-item:hover {
+  background: var(--panel-hover);
+}
+
+.fm-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fm-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: calc(var(--radius) - 2px);
+  background: var(--panel-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+/* File name */
+.fm-name {
+  font-size: 15px;
+}
+
+/* --------------------------------------- */
+/*  RESPONSIVE                             */
+/* --------------------------------------- */
+
+@media (max-width: 780px) {
+  .fm-content {
+    flex-direction: column;
+  }
+
+  .fm-side {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 10px;
+  }
+
+  .fm-side-item {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .fm-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fm-header button,
+  .fm-upload label {
+    width: 100%;
+    text-align: center;
+  }
+
+  .fm-list {
+    padding: 10px;
+  }
+}

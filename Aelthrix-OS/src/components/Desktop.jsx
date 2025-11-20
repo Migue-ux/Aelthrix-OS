@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+// src/Desktop.jsx
+import React, { useState } from "react";
 import Window from "./Window";
 import Taskbar from "./Taskbar";
 import DesktopIcon from "./DesktopIcon";
@@ -10,12 +11,15 @@ import BrowserApp from "../apps/BrowserApp";
 import EditorApp from "../apps/EditorApp";
 import CalcApp from "../apps/CalcApp";
 import StoreApp from "../apps/StoreApp";
+import FileManagerApp, { moveToTrash } from "../apps/FileManagerApp"; // <-- import moveToTrash
 
 import "../styles/desktop.css";
 
 export default function Desktop() {
   const [windows, setWindows] = useState([]);
   const [zCounter, setZCounter] = useState(100);
+  const [trashHover, setTrashHover] = useState(false);
+
   const appsMap = {
     Terminal: { key: "terminal", component: TerminalApp, icon: "💻" },
     "Configurações": { key: "settings", component: SettingsApp, icon: "⚙️" },
@@ -24,21 +28,21 @@ export default function Desktop() {
     Editor: { key: "editor", component: EditorApp, icon: "📝" },
     Calculadora: { key: "calc", component: CalcApp, icon: "➗" },
     Loja: { key: "store", component: StoreApp, icon: "🏪" },
+    Arquivos: { key: "files", component: FileManagerApp, icon: "📁" }, // <-- Arquivos
   };
-
-  // restore installed apps from storage (store app can add)
-  useEffect(()=> {
-    const saved = JSON.parse(localStorage.getItem("aelthrix_installed_apps") || "[]");
-    // could be used later by store
-  },[]);
 
   const openApp = (label) => {
     const exists = windows.find((w) => w.label === label);
     if (exists) {
-      setWindows((prev) => prev.map((w) => w.label === label ? { ...w, minimized:false, zIndex: zCounter+1} : w));
-      setZCounter(c => c+1);
+      setWindows((prev) =>
+        prev.map((w) =>
+          w.label === label ? { ...w, minimized: false, zIndex: zCounter + 1 } : w
+        )
+      );
+      setZCounter((c) => c + 1);
       return;
     }
+
     const newWin = {
       id: Date.now(),
       key: appsMap[label].key,
@@ -47,9 +51,9 @@ export default function Desktop() {
       zIndex: zCounter + 1,
       pos: null,
     };
-    setWindows(prev => [...prev, newWin]);
-    setZCounter(c => c+1);
-    // system open sound
+
+    setWindows((prev) => [...prev, newWin]);
+    setZCounter((c) => c + 1);
     playOpenSound();
   };
 
@@ -62,18 +66,44 @@ export default function Desktop() {
     a.play().catch(()=>{});
   };
 
-  const closeApp = (id) => setWindows(prev => prev.filter(w => w.id !== id));
-  const minimizeApp = (id) => setWindows(prev => prev.map(w => w.id === id ? { ...w, minimized:true } : w));
+  const closeApp = (id) => setWindows((prev) => prev.filter((w) => w.id !== id));
+  const minimizeApp = (id) => setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, minimized: true } : w)));
   const focusApp = (id) => {
-    setWindows(prev => prev.map(w => w.id === id ? { ...w, zIndex: zCounter+1 } : w));
-    setZCounter(c => c+1);
+    setWindows((prev) => prev.map((w) => (w.id === id ? { ...w, zIndex: zCounter + 1 } : w)));
+    setZCounter((c) => c + 1);
   };
 
   const renderAppContent = (w) => {
-    const comp = Object.values(appsMap).find(a=>a.key===w.key)?.component;
+    const comp = Object.values(appsMap).find(a => a.key === w.key)?.component;
     if (!comp) return <div style={{padding:16}}>App não encontrado</div>;
     const AppComponent = comp;
     return <AppComponent openApp={openApp} />;
+  };
+
+  // --- Trash drop handlers (desktop level) ---
+  const onTrashDragOver = (e) => {
+    e.preventDefault();
+    setTrashHover(true);
+  };
+
+  const onTrashDragLeave = () => {
+    setTrashHover(false);
+  };
+
+  const onTrashDrop = (e) => {
+    e.preventDefault();
+    setTrashHover(false);
+    // try both custom data and plain text
+    const id = e.dataTransfer.getData("aelthrix_drag_id") || e.dataTransfer.getData("text/plain");
+    if (!id) return;
+    try {
+      moveToTrash(id); // updates localStorage via FileManager exported fn
+      // notify other components (FileManagerApp listens on storage)
+      window.dispatchEvent(new Event("storage"));
+    } catch (err) {
+      console.error("Erro ao mover para lixeira:", err);
+      alert("Erro ao mover para lixeira");
+    }
   };
 
   return (
@@ -81,8 +111,9 @@ export default function Desktop() {
       <div className="desktop-overlay" />
 
       <div className="desktop-icons">
-        {Object.keys(appsMap).map(label => (
-          <DesktopIcon key={label}
+        {Object.keys(appsMap).map((label) => (
+          <DesktopIcon
+            key={label}
             icon={<div style={{fontSize:28}}>{appsMap[label].icon}</div>}
             label={label}
             onDoubleClick={() => openApp(label)}
@@ -90,34 +121,41 @@ export default function Desktop() {
         ))}
       </div>
 
-      {windows.map(w => {
+      {/* Windows */}
+      {windows.map((w) => {
         if (w.minimized) return null;
         return (
           <div key={w.id} style={{ position: "absolute", zIndex: w.zIndex }}>
-            <Window title={w.label}
-                    onClose={() => closeApp(w.id)}
-                    onMinimize={() => minimizeApp(w.id)}
-                    onFocus={() => focusApp(w.id)}>
+            <Window
+              title={w.label}
+              onClose={() => closeApp(w.id)}
+              onMinimize={() => minimizeApp(w.id)}
+              onFocus={() => focusApp(w.id)}
+            >
               {renderAppContent(w)}
             </Window>
           </div>
         );
       })}
 
+      {/* Dock / Taskbar */}
       <Taskbar
         openWindows={windows}
         onClickApp={(title) => {
-          const win = windows.find(p=>p.label===title);
+          const win = windows.find((p) => p.label === title);
           if (!win) return;
           if (win.minimized) {
-            setWindows(prev => prev.map(p => p.id === win.id ? { ...p, minimized:false, zIndex: zCounter+1 } : p));
-            setZCounter(c=>c+1);
+            setWindows((prev) => prev.map((p) => p.id === win.id ? { ...p, minimized:false, zIndex: zCounter+1 } : p));
+            setZCounter((c) => c + 1);
           } else {
-            setWindows(prev => prev.map(p => p.id === win.id ? { ...p, minimized:true } : p));
+            setWindows((prev) => prev.map((p) => p.id === win.id ? { ...p, minimized:true } : p));
           }
         }}
         onLaunch={(label) => openApp(label)}
       />
+
+      
+
     </div>
   );
 }
